@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarFind - Admin Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+        
+        .admin-login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-header h1 {
+            color: #2563eb;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .admin-header h2 {
+            color: #4b5563;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .remember-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+        }
+        
+        .forgot-password {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .admin-login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .admin-login-btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .return-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .return-link a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+        
+        .return-link a:hover {
+            color: #2563eb;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            background: #fee2e2;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .demo-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .demo-box p {
+            color: #475569;
+            margin: 5px 0;
+        }
+        
+        .user-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .user-link a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="admin-login-card">
+            <div class="admin-header">
+                <h1>ScholarFind Admin</h1>
+                <h2>Admin Portal Login</h2>
+            </div>
+            
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-email">Admin Email</label>
+                    <input type="email" id="admin-email" placeholder="Enter admin email" value="admin@scholarfind.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" placeholder="Enter password" value="admin123" required>
+                </div>
+                
+                <div class="form-options">
+                    <label class="remember-checkbox">
+                        <input type="checkbox" checked> Remember
+                    </label>
+                    <a href="#" class="forgot-password" onclick="alert('Default password: admin123')">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="admin-login-btn">Login to Admin Dashboard</button>
+                
+                <div class="return-link">
+                    <a href="index.html">← Return to main site</a>
+                </div>
+            </form>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <div class="demo-box">
+                <p><strong>👑 Admin Demo:</strong></p>
+                <p>admin@scholarfind.com</p>
+                <p>admin123</p>
+            </div>
+            
+            <div class="user-link">
+                <a href="login.html">→ User Login (for students)</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ensure admin user exists
+        (function() {
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            const adminExists = users.some(u => u.role === 'admin');
+            
+            if (!adminExists) {
+                users.push({
+                    id: users.length + 1,
+                    name: 'Admin User',
+                    email: 'admin@scholarfind.com',
+                    password: 'admin123',
+                    role: 'admin'
+                });
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        })();
+
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            const errorDiv = document.getElementById('error-message');
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const admin = users.find(u => u.email === email && u.password === password && u.role === 'admin');
+            
+            if (admin) {
+                // Store admin session
+                const token = 'admin_token_' + Date.now();
+                const adminInfo = {
+                    id: admin.id,
+                    name: admin.name,
+                    email: admin.email,
+                    role: 'admin'
+                };
+                
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(adminInfo));
+                
+                // IMPORTANT: Redirect to admin dashboard
+                console.log('Admin login successful, redirecting to dashboard...');
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                // Check if it's a regular user
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    errorDiv.textContent = '❌ This is a user account. Please use User Login.';
+                } else {
+                    errorDiv.textContent = '❌ Invalid admin credentials';
+                }
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

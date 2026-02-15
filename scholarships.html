@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarships - ScholarFind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+        }
+        
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand h1 {
+            color: #2563eb;
+            font-size: 24px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #2563eb;
+        }
+        
+        .nav-menu a.active {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .user-login-btn {
+            background: #2563eb !important;
+            color: white !important;
+        }
+        
+        .admin-login-btn {
+            background: #dc2626 !important;
+            color: white !important;
+        }
+        
+        .scholarships-hero {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .scholarships-hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .scholarships-hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            padding: 15px 30px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .search-btn:hover {
+            background: #d97706;
+        }
+        
+        .scholarships-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .filter-sidebar {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .filter-sidebar h3 {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+        }
+        
+        .filter-section h4 {
+            margin-bottom: 10px;
+            color: #4b5563;
+            font-size: 16px;
+        }
+        
+        .filter-section select,
+        .filter-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .amount-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .amount-inputs input {
+            width: calc(50% - 5px);
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 5px;
+            color: #4b5563;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background: #e5e7eb;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        #results-count {
+            color: #64748b;
+            font-size: 16px;
+        }
+        
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sort-options select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .scholarship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .scholarship-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .scholarship-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .scholarship-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .scholarship-header h3 {
+            font-size: 20px;
+            color: #1e293b;
+            margin-right: 15px;
+        }
+        
+        .bookmark-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        
+        .bookmark-btn.active {
+            color: #f59e0b;
+        }
+        
+        .scholarship-provider {
+            color: #64748b;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .scholarship-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #475569;
+        }
+        
+        .amount {
+            color: #059669;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .deadline-critical {
+            color: #dc2626;
+        }
+        
+        .view-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .apply-link-btn {
+            display: inline-block;
+            background: #059669;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        
+        .apply-link-btn:hover {
+            background: #047857;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+        
+        .page-btn {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover,
+        .page-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 10px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Login Required Overlay */
+        .login-required-overlay {
+            position: relative;
+        }
+        
+        .login-required-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .login-required-message .lock-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .login-required-message h2 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+        
+        .login-required-message p {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .login-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .login-option-btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        
+        .login-option-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .user-login-option {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .admin-login-option {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .signup-option {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        
+        .scholarship-detail h2 {
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .provider {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+        
+        .detail-section {
+            margin-bottom: 30px;
+        }
+        
+        .detail-section h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-secondary {
+            padding: 12px 24px;
+            background: white;
+            color: #4b5563;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            background: #f3f4f6;
+        }
+        
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #10b981;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 9999;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: #ef4444;
+        }
+        
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .scholarships-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>ScholarFind</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scholarships.html" class="active">Scholarships</a></li>
+                <li><a href="bookmarks.html" id="bookmarks-link" style="display: none;">Bookmarks</a></li>
+                <li><a href="admin-dashboard.html" id="admin-dashboard-link" style="display: none;">Admin</a></li>
+                <li><a href="login.html" id="user-login-btn" class="user-login-btn">User Login</a></li>
+                <li><a href="admin-login.html" id="admin-login-btn" class="admin-login-btn">Admin Login</a></li>
+                <li><a href="#" id="logout-btn" style="display: none;" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="scholarships-hero">
+        <div class="container">
+            <h1>Find Your Perfect Scholarship</h1>
+            <p>Discover scholarships tailored to your needs</p>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search by name, provider, or keywords...">
+                <button onclick="handleSearch()" class="search-btn">🔍 Search</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="scholarships-layout">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <h3>Filter Scholarships</h3>
+                
+                <div class="filter-section">
+                    <h4>Category</h4>
+                    <select id="filter-category" onchange="handleFilterChange()">
+                        <option value="">All Categories</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Business">Business</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Law">Law</option>
+                        <option value="Science">Science</option>
+                        <option value="Humanities">Humanities</option>
+                    </select>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Amount Range</h4>
+                    <div class="amount-inputs">
+                        <input type="number" id="min-amount" placeholder="Min ₹" onchange="handleFilterChange()">
+                        <span>to</span>
+                        <input type="number" id="max-amount" placeholder="Max ₹" onchange="handleFilterChange()">
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h4>Location (Indian States)</h4>
+                    <select id="filter-location" onchange="handleFilterChange()">
+                        <option value="">All States</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Remote">Remote / Online</option>
+                        <option value="Pan India">Pan India</option>
+                    </select>
+                </div>
+                
+                <button onclick="handleResetFilters()" class="reset-btn">Reset All Filters</button>
+            </aside>
+
+            <!-- Scholarships Content -->
+            <div class="scholarships-content">
+                <div class="results-header">
+                    <p id="results-count">Login to view scholarships</p>
+                    <div class="sort-options">
+                        <label>Sort by:</label>
+                        <select id="sort-select" onchange="handleSortChange()" disabled>
+                            <option value="newest">Newest First</option>
+                            <option value="amount-high">Highest Amount</option>
+                            <option value="amount-low">Lowest Amount</option>
+                            <option value="deadline">Deadline (Earliest)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="scholarship-grid" class="scholarship-grid">
+                    <!-- Content will be loaded based on login status -->
+                </div>
+
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scholarship Detail Modal -->
+    <div id="scholarship-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="scholarship-detail-content">
+                <!-- Scholarship details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ScholarFind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== AUTHENTICATION FUNCTIONS ==========
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            const token = localStorage.getItem('token');
+            
+            const userLogin = document.getElementById('user-login-btn');
+            const adminLogin = document.getElementById('admin-login-btn');
+            const logout = document.getElementById('logout-btn');
+            const bookmarks = document.getElementById('bookmarks-link');
+            const adminDash = document.getElementById('admin-dashboard-link');
+            
+            if (token && user) {
+                userLogin.style.display = 'none';
+                adminLogin.style.display = 'none';
+                logout.style.display = 'block';
+                
+                if (user.role === 'admin') {
+                    adminDash.style.display = 'block';
+                    bookmarks.style.display = 'none';
+                } else {
+                    bookmarks.style.display = 'block';
+                    adminDash.style.display = 'none';
+                }
+                
+                // User is logged in - enable filters and load scholarships
+                enableFilters(true);
+                loadScholarships();
+                return true;
+            } else {
+                userLogin.style.display = 'block';
+                adminLogin.style.display = 'block';
+                logout.style.display = 'none';
+                bookmarks.style.display = 'none';
+                adminDash.style.display = 'none';
+                
+                // User is not logged in - disable filters and show login required
+                enableFilters(false);
+                showLoginRequired();
+                return false;
+            }
+        }
+
+        function enableFilters(enabled) {
+            const filterCategory = document.getElementById('filter-category');
+            const minAmount = document.getElementById('min-amount');
+            const maxAmount = document.getElementById('max-amount');
+            const filterLocation = document.getElementById('filter-location');
+            const sortSelect = document.getElementById('sort-select');
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            filterCategory.disabled = !enabled;
+            minAmount.disabled = !enabled;
+            maxAmount.disabled = !enabled;
+            filterLocation.disabled = !enabled;
+            sortSelect.disabled = !enabled;
+            searchInput.disabled = !enabled;
+            searchBtn.disabled = !enabled;
+            
+            if (!enabled) {
+                filterCategory.value = '';
+                minAmount.value = '';
+                maxAmount.value = '';
+                filterLocation.value = '';
+                sortSelect.value = 'newest';
+                searchInput.value = '';
+            }
+        }
+
+        function showLoginRequired() {
+            const grid = document.getElementById('scholarship-grid');
+            const resultsCount = document.getElementById('results-count');
+            const pagination = document.getElementById('pagination');
+            
+            resultsCount.textContent = 'Login required to view scholarships';
+            pagination.innerHTML = '';
+            
+            grid.innerHTML = `
+                <div class="login-required-message">
+                    <div class="lock-icon">🔒</div>
+                    <h2>Login Required</h2>
+                    <p>Please login to view and apply for scholarships</p>
+                    <div class="login-options">
+                        <a href="login.html" class="login-option-btn user-login-option">User Login</a>
+                        <a href="admin-login.html" class="login-option-btn admin-login-option">Admin Login</a>
+                        <a href="signup.html" class="login-option-btn signup-option">Create Account</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('bookmarks');
+            window.location.href = 'index.html';
+        }
+
+        // ========== SCHOLARSHIP DATA ==========
+        let allScholarships = [];
+        let filteredScholarships = [];
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
+        // Load scholarships from localStorage (only if logged in)
+        function loadScholarships() {
+            const saved = localStorage.getItem('scholarships');
+            allScholarships = saved ? JSON.parse(saved) : [];
+            
+            if (allScholarships.length === 0) {
+                document.getElementById('scholarship-grid').innerHTML = `
+                    <div class="no-results">
+                        <h3>No Scholarships Available</h3>
+                        <p>Check back later for new scholarships.</p>
+                    </div>
+                `;
+                document.getElementById('results-count').textContent = '0 scholarships found';
+                return;
+            }
+            
+            applyFilters();
+        }
+
+        // Display scholarships
+        function displayScholarships() {
+            const grid = document.getElementById('scholarship-grid');
+            
+            if (filteredScholarships.length === 0) {
+                grid.innerHTML = '<div class="no-results"><h3>No scholarships found</h3><p>Try adjusting your filters</p></div>';
+                document.getElementById('pagination').innerHTML = '';
+                document.getElementById('results-count').textContent = '0 scholarships found';
+                return;
+            }
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredScholarships.slice(start, end);
+
+            grid.innerHTML = pageItems.map(s => {
+                const bookmarked = isBookmarked(s.id);
+                // Format amount in Indian Rupees
+                const amountInRupees = Number(s.amount).toLocaleString('en-IN');
+                return `
+                    <div class="scholarship-card">
+                        <div class="scholarship-header">
+                            <h3>${s.title}</h3>
+                            <button class="bookmark-btn ${bookmarked ? 'active' : ''}" onclick="toggleBookmark(${s.id})">
+                                ${bookmarked ? '★' : '☆'}
+                            </button>
+                        </div>
+                        <p class="scholarship-provider">${s.provider}</p>
+                        <div class="scholarship-details">
+                            <span class="detail-item">📚 ${s.category}</span>
+                            <span class="detail-item">📍 ${s.location}</span>
+                            <span class="detail-item amount">💰 ₹${amountInRupees}</span>
+                            <span class="detail-item deadline-critical">⏰ Due: ${new Date(s.deadline).toLocaleDateString('en-IN')}</span>
+                        </div>
+                        <p>${s.eligibility.substring(0, 100)}...</p>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="view-btn" onclick="viewScholarship(${s.id})">View Details</button>
+                            ${s.applyLink ? 
+                                `<a href="${s.applyLink}" target="_blank" class="apply-link-btn">Apply Now →</a>` : 
+                                `<button class="view-btn" onclick="alert('Application link not available')">Apply</button>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('results-count').textContent = `${filteredScholarships.length} scholarships found`;
+            updatePagination();
+        }
+
+        // Handle filter changes (check login first)
+        function handleFilterChange() {
+            if (!checkAuth()) return;
+            applyFilters();
+        }
+
+        // Handle search (check login first)
+        function handleSearch() {
+            if (!checkAuth()) return;
+            applyFilters();
+        }
+
+        // Handle sort change (check login first)
+        function handleSortChange() {
+            if (!checkAuth()) return;
+            sortScholarships();
+        }
+
+        // Handle reset filters (check login first)
+        function handleResetFilters() {
+            if (!checkAuth()) return;
+            resetFilters();
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const category = document.getElementById('filter-category').value;
+            const minAmount = document.getElementById('min-amount').value;
+            const maxAmount = document.getElementById('max-amount').value;
+            const location = document.getElementById('filter-location').value;
+            const searchTerm = document.getElementById('search-input')?.value?.toLowerCase() || '';
+            
+            filteredScholarships = allScholarships.filter(s => {
+                if (category && s.category !== category) return false;
+                if (minAmount && s.amount < minAmount) return false;
+                if (maxAmount && s.amount > maxAmount) return false;
+                if (location && !s.location.toLowerCase().includes(location.toLowerCase())) return false;
+                if (searchTerm) {
+                    return s.title.toLowerCase().includes(searchTerm) ||
+                           s.provider.toLowerCase().includes(searchTerm) ||
+                           s.description.toLowerCase().includes(searchTerm);
+                }
+                return true;
+            });
+            
+            currentPage = 1;
+            sortScholarships();
+        }
+
+        // Sort scholarships
+        function sortScholarships() {
+            const sortBy = document.getElementById('sort-select').value;
+            
+            switch(sortBy) {
+                case 'amount-high':
+                    filteredScholarships.sort((a, b) => b.amount - a.amount);
+                    break;
+                case 'amount-low':
+                    filteredScholarships.sort((a, b) => a.amount - b.amount);
+                    break;
+                case 'deadline':
+                    filteredScholarships.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+                    break;
+                default: // newest
+                    filteredScholarships.sort((a, b) => b.id - a.id);
+            }
+            
+            displayScholarships();
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('filter-category').value = '';
+            document.getElementById('min-amount').value = '';
+            document.getElementById('max-amount').value = '';
+            document.getElementById('filter-location').value = '';
+            document.getElementById('sort-select').value = 'newest';
+            document.getElementById('search-input').value = '';
+            applyFilters();
+        }
+
+        // Pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredScholarships.length / itemsPerPage);
+            const paginationEl = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                paginationEl.innerHTML = '';
+                return;
+            }
+            
+            let html = `<button class="page-btn" onclick="changePage(1)" ${currentPage === 1 ? 'disabled' : ''}>«</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<span class="page-btn" style="background: none; border: none;">...</span>`;
+                }
+            }
+            
+            html += `<button class="page-btn" onclick="changePage(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''}>»</button>`;
+            paginationEl.innerHTML = html;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayScholarships();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ========== BOOKMARK FUNCTIONS ==========
+        function isBookmarked(id) {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            return bookmarks.includes(id);
+        }
+
+        function toggleBookmark(id) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showNotification('Please login to bookmark scholarships', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            
+            if (bookmarks.includes(id)) {
+                bookmarks = bookmarks.filter(b => b !== id);
+                showNotification('Bookmark removed');
+            } else {
+                bookmarks.push(id);
+                showNotification('Scholarship bookmarked!');
+            }
+            
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            
+            // Refresh current view to update bookmark buttons
+            displayScholarships();
+        }
+
+        // ========== MODAL FUNCTIONS ==========
+        function viewScholarship(id) {
+            const scholarship = allScholarships.find(s => s.id === id);
+            if (!scholarship) return;
+            
+            const modal = document.getElementById('scholarship-modal');
+            const content = document.getElementById('scholarship-detail-content');
+            const daysLeft = Math.ceil((new Date(scholarship.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+            
+            content.innerHTML = `
+                <div class="scholarship-detail">
+                    <h2>${scholarship.title}</h2>
+                    <p class="provider">${scholarship.provider}</p>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="label">💰 Amount:</span>
+                            <span class="value amount">₹${Number(scholarship.amount).toLocaleString('en-IN')}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">📚 Category:</span>
+                            <span class="value">${scholarship.category}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">📍 Location:</span>
+                            <span class="value">${scholarship.location}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">⏰ Deadline:</span>
+                            <span class="value deadline-critical">${new Date(scholarship.deadline).toLocaleDateString('en-IN')} (${daysLeft} days left)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Eligibility Criteria</h3>
+                        <p>${scholarship.eligibility}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Description</h3>
+                        <p>${scholarship.description}</p>
+                    </div>
+                    
+                    <div class="detail-actions">
+                        <button onclick="toggleBookmark(${scholarship.id})" class="btn-secondary">
+                            ${isBookmarked(scholarship.id) ? '★ Remove Bookmark' : '☆ Add to Bookmarks'}
+                        </button>
+                        ${scholarship.applyLink ? 
+                            `<a href="${scholarship.applyLink}" target="_blank" class="view-btn external-link">Apply on Official Website →</a>` : 
+                            `<button class="view-btn" onclick="alert('Application link not available')">Apply Now</button>`}
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('scholarship-modal').style.display = 'none';
+        }
+
+        // ========== NOTIFICATION FUNCTIONS ==========
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = checkAuth();
+            
+            if (isLoggedIn) {
+                // Check URL parameters only if logged in
+                const params = new URLSearchParams(window.location.search);
+                const search = params.get('search');
+                const category = params.get('category');
+                
+                if (search) {
+                    document.getElementById('search-input').value = search;
+                    setTimeout(() => applyFilters(), 100);
+                }
+                if (category) {
+                    document.getElementById('filter-category').value = category;
+                    setTimeout(() => applyFilters(), 100);
+                }
+            }
+        });
+
+        // Click outside modal to close
+        window.onclick = function(event) {
+            const modal = document.getElementById('scholarship-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

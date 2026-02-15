@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarFind - Find Perfect Scholarships</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+        }
+        
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand h1 {
+            color: #2563eb;
+            font-size: 24px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #2563eb;
+        }
+        
+        .nav-menu a.active {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        /* Login button styles */
+        .user-login-btn {
+            background: #2563eb !important;
+            color: white !important;
+        }
+        
+        .admin-login-btn {
+            background: #dc2626 !important;
+            color: white !important;
+        }
+        
+        .user-login-btn:hover {
+            background: #1d4ed8 !important;
+        }
+        
+        .admin-login-btn:hover {
+            background: #b91c1c !important;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 30px auto;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            padding: 15px 30px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .search-btn:hover {
+            background: #d97706;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        
+        .stat-item h3 {
+            font-size: 36px;
+        }
+        
+        .featured {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #1e293b;
+        }
+        
+        .scholarship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .scholarship-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .scholarship-card h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .scholarship-provider {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        
+        .scholarship-details {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        
+        .amount {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .deadline {
+            color: #dc2626;
+        }
+        
+        .view-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        
+        .categories {
+            background: #f1f5f9;
+            padding: 60px 0;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .category-card {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 10px;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-message a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>ScholarFind</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="scholarships.html">Scholarships</a></li>
+                <li><a href="bookmarks.html" id="bookmarks-link" style="display: none;">Bookmarks</a></li>
+                <li><a href="admin-dashboard.html" id="admin-dashboard-link" style="display: none;">Admin Dashboard</a></li>
+                
+                <!-- LOGIN BUTTONS - ALWAYS VISIBLE -->
+                <li><a href="login.html" id="user-login-btn" class="user-login-btn">User Login</a></li>
+                <li><a href="admin-login.html" id="admin-login-btn" class="admin-login-btn">Admin Login</a></li>
+                
+                <!-- LOGOUT BUTTON -->
+                <li><a href="#" id="logout-btn" style="display: none;" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Find the Perfect Scholarship for Your Education</h1>
+            <p>Discover thousands of scholarships to fund your future. No more endless searching.</p>
+            
+            <div class="search-container">
+                <input type="text" id="home-search" placeholder="Search scholarships...">
+                <button onclick="searchScholarships()" class="search-btn">Search</button>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <h3 id="total-scholarships">0</h3>
+                    <p>Scholarships</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="total-providers">0</h3>
+                    <p>Providers</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="total-funding">$0</h3>
+                    <p>Total Funding</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Featured Scholarships</h2>
+            <div class="scholarship-grid" id="featured-scholarships">
+                <!-- Loaded from JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Browse by Category</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="window.location.href='scholarships.html?category=Engineering'">
+                    <div class="category-icon">🔧</div>
+                    <h3>Engineering</h3>
+                    <p id="eng-count">0</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='scholarships.html?category=Medical'">
+                    <div class="category-icon">⚕️</div>
+                    <h3>Medical</h3>
+                    <p id="med-count">0</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='scholarships.html?category=Business'">
+                    <div class="category-icon">💼</div>
+                    <h3>Business</h3>
+                    <p id="bus-count">0</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='scholarships.html?category=Computer Science'">
+                    <div class="category-icon">💻</div>
+                    <h3>Computer Science</h3>
+                    <p id="cs-count">0</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ScholarFind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== AUTHENTICATION FUNCTIONS ==========
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            const token = localStorage.getItem('token');
+            
+            const userLogin = document.getElementById('user-login-btn');
+            const adminLogin = document.getElementById('admin-login-btn');
+            const logout = document.getElementById('logout-btn');
+            const bookmarks = document.getElementById('bookmarks-link');
+            const adminDash = document.getElementById('admin-dashboard-link');
+            
+            if (token && user) {
+                // User is logged in
+                if (userLogin) userLogin.style.display = 'none';
+                if (adminLogin) adminLogin.style.display = 'none';
+                if (logout) logout.style.display = 'block';
+                
+                if (user.role === 'admin') {
+                    if (adminDash) adminDash.style.display = 'block';
+                    if (bookmarks) bookmarks.style.display = 'none';
+                    console.log('Admin logged in');
+                } else {
+                    if (bookmarks) bookmarks.style.display = 'block';
+                    if (adminDash) adminDash.style.display = 'none';
+                    console.log('User logged in');
+                }
+            } else {
+                // Not logged in
+                if (userLogin) userLogin.style.display = 'block';
+                if (adminLogin) adminLogin.style.display = 'block';
+                if (logout) logout.style.display = 'none';
+                if (bookmarks) bookmarks.style.display = 'none';
+                if (adminDash) adminDash.style.display = 'none';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('bookmarks');
+            window.location.href = 'index.html';
+        }
+
+        // ========== SCHOLARSHIP FUNCTIONS ==========
+        function loadScholarships() {
+            let scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            
+            // Add sample data if empty
+            if (scholarships.length === 0) {
+                scholarships = [
+                    { id: 1, title: "MIT Engineering Excellence", provider: "MIT", category: "Engineering", amount: 50000, deadline: "2024-12-31" },
+                    { id: 2, title: "Harvard Medical Scholarship", provider: "Harvard", category: "Medical", amount: 75000, deadline: "2024-11-30" },
+                    { id: 3, title: "Google CS Fellowship", provider: "Google", category: "Computer Science", amount: 45000, deadline: "2024-10-15" }
+                ];
+                localStorage.setItem('scholarships', JSON.stringify(scholarships));
+            }
+            
+            // Update stats
+            document.getElementById('total-scholarships').textContent = scholarships.length;
+            
+            const providers = new Set(scholarships.map(s => s.provider)).size;
+            document.getElementById('total-providers').textContent = providers;
+            
+            const total = scholarships.reduce((sum, s) => sum + (Number(s.amount) || 0), 0);
+            document.getElementById('total-funding').textContent = '$' + total.toLocaleString();
+            
+            // Category counts
+            const counts = { Engineering: 0, Medical: 0, Business: 0, 'Computer Science': 0 };
+            scholarships.forEach(s => {
+                if (counts.hasOwnProperty(s.category)) counts[s.category]++;
+            });
+            
+            document.getElementById('eng-count').textContent = counts.Engineering + ' scholarships';
+            document.getElementById('med-count').textContent = counts.Medical + ' scholarships';
+            document.getElementById('bus-count').textContent = counts.Business + ' scholarships';
+            document.getElementById('cs-count').textContent = counts['Computer Science'] + ' scholarships';
+            
+            // Featured scholarships
+            const featured = document.getElementById('featured-scholarships');
+            if (scholarships.length > 0) {
+                featured.innerHTML = scholarships.slice(0, 3).map(s => `
+                    <div class="scholarship-card">
+                        <h3>${s.title}</h3>
+                        <p class="scholarship-provider">${s.provider}</p>
+                        <div class="scholarship-details">
+                            <span class="amount">$${Number(s.amount).toLocaleString()}</span>
+                            <span class="deadline">Due: ${new Date(s.deadline).toLocaleDateString()}</span>
+                        </div>
+                        <a href="scholarships.html" class="view-btn">View Details</a>
+                    </div>
+                `).join('');
+            } else {
+                featured.innerHTML = '<div class="empty-message"><p>No scholarships yet. <a href="admin-login.html">Login as Admin</a> to add.</p></div>';
+            }
+        }
+
+        function searchScholarships() {
+            const term = document.getElementById('home-search').value;
+            if (term.trim()) {
+                window.location.href = `scholarships.html?search=${encodeURIComponent(term)}`;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadScholarships();
+        });
+    </script>
+</body>
+</html>

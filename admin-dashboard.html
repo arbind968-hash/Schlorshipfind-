@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ScholarFind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f1f5f9;
+        }
+        
+        .admin-dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 280px;
+            background: #1e293b;
+            color: white;
+            padding: 30px 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 30px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            color: #94a3b8;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            background: #334155;
+        }
+        
+        .sidebar-menu li.active {
+            background: #2563eb;
+        }
+        
+        .admin-main {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card h3 {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card p {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-width: 800px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .scholarship-table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .scholarship-table th {
+            background: #f8fafc;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+        }
+        
+        .scholarship-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .action-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+        
+        .edit-btn {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .view-link-btn {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            display: inline-block;
+        }
+        
+        .success-message {
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .info-text {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 10px;
+        }
+        
+        .empty-state h3 {
+            color: #1e293b;
+            margin: 20px 0;
+        }
+        
+        .empty-state p {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>ScholarFind</h2>
+                <p>Admin Panel</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" onclick="showSection('dashboard')">
+                    <span>📊</span> Dashboard
+                </li>
+                <li onclick="showSection('add')">
+                    <span>➕</span> Add Scholarship
+                </li>
+                <li onclick="showSection('manage')">
+                    <span>📋</span> Manage Scholarships
+                </li>
+                <li onclick="logout()">
+                    <span>🚪</span> Logout
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section active">
+                <h1>Dashboard Overview</h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Scholarships</h3>
+                        <p id="total-scholarships">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p id="total-users">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Amount</h3>
+                        <p id="total-amount">₹0</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h2>Quick Actions</h2>
+                    <div style="display: flex; gap: 20px; margin-top: 20px;">
+                        <button onclick="showSection('add')" class="btn-primary">➕ Add Your First Scholarship</button>
+                        <button onclick="showSection('manage')" class="btn-primary" style="background: #64748b;">📋 Manage Scholarships</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Scholarship Section -->
+            <div id="add-section" class="admin-section">
+                <h1>Add New Scholarship</h1>
+                <p style="color: #64748b; margin-bottom: 20px;">Fill in the details below to add a new scholarship. All fields are required.</p>
+                
+                <div id="success-message" class="success-message">✅ Scholarship added successfully!</div>
+                
+                <div class="form-container">
+                    <form id="add-form">
+                        <div class="form-group">
+                            <label>Scholarship Title *</label>
+                            <input type="text" id="title" placeholder="e.g., IIT Bombay Excellence Scholarship" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Provider/Organization *</label>
+                            <input type="text" id="provider" placeholder="e.g., IIT Bombay, Google India, TCS" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Medical">Medical</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Arts">Arts</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Law">Law</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Humanities">Humanities</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Amount (₹) *</label>
+                                <input type="number" id="amount" placeholder="e.g., 50000" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Deadline *</label>
+                                <input type="date" id="deadline" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Location (Indian State) *</label>
+                                <select id="location" required>
+                                    <option value="">Select State</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="Punjab">Punjab</option>
+                                    <option value="Haryana">Haryana</option>
+                                    <option value="Kerala">Kerala</option>
+                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                    <option value="Odisha">Odisha</option>
+                                    <option value="Assam">Assam</option>
+                                    <option value="Jharkhand">Jharkhand</option>
+                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                    <option value="Uttarakhand">Uttarakhand</option>
+                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                    <option value="Goa">Goa</option>
+                                    <option value="Remote">Remote / Online</option>
+                                    <option value="Pan India">Pan India</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Eligibility Criteria *</label>
+                            <textarea id="eligibility" rows="3" placeholder="Who can apply? (Percentage requirements, majors, citizenship, etc.)" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Full Description *</label>
+                            <textarea id="description" rows="5" placeholder="Complete details about the scholarship, benefits, and requirements" required></textarea>
+                        </div>
+                        
+                        <!-- Application Link Field -->
+                        <div class="form-group">
+                            <label>Application Link (URL)</label>
+                            <input type="url" id="apply-link" placeholder="https://www.scholarship-website.com/apply">
+                            <div class="info-text">Enter the full URL where students can apply directly. Must start with https://</div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" style="padding: 15px 30px; font-size: 16px;">➕ Add Scholarship</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Manage Scholarships Section -->
+            <div id="manage-section" class="admin-section">
+                <h1>Manage Scholarships</h1>
+                <p style="color: #64748b; margin-bottom: 20px;">View, edit, or delete scholarships you've added.</p>
+                
+                <div id="scholarships-list">
+                    <div class="empty-state">
+                        <div style="font-size: 64px; margin-bottom: 20px;">📋</div>
+                        <h3>No Scholarships Yet</h3>
+                        <p>Start by adding your first scholarship using the "Add Scholarship" section.</p>
+                        <button onclick="showSection('add')" class="btn-primary">➕ Add Your First Scholarship</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="background: white; max-width: 700px; margin: 50px auto; padding: 30px; border-radius: 10px; max-height: 80vh; overflow-y: auto; position: relative;">
+            <span style="position: absolute; right: 20px; top: 20px; font-size: 28px; cursor: pointer;" onclick="closeModal()">&times;</span>
+            <h2>Edit Scholarship</h2>
+            <form id="edit-form" style="margin-top: 20px;"></form>
+        </div>
+    </div>
+
+    <script>
+        // Check if admin is logged in
+        (function() {
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            const token = localStorage.getItem('token');
+            
+            if (!token || !user || user.role !== 'admin') {
+                alert('Admin access required');
+                window.location.href = 'admin-login.html';
+            }
+        })();
+
+        // Initialize empty scholarships array if not exists
+        if (!localStorage.getItem('scholarships')) {
+            localStorage.setItem('scholarships', JSON.stringify([]));
+        }
+
+        // Show different sections
+        function showSection(section) {
+            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`${section}-section`).classList.add('active');
+            
+            if (section === 'dashboard') updateStats();
+            if (section === 'manage') loadScholarships();
+        }
+
+        // Update dashboard stats
+        function updateStats() {
+            const scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            document.getElementById('total-scholarships').textContent = scholarships.length;
+            document.getElementById('total-users').textContent = users.length;
+            
+            const total = scholarships.reduce((sum, s) => sum + (Number(s.amount) || 0), 0);
+            document.getElementById('total-amount').textContent = total ? '₹' + total.toLocaleString('en-IN') : '₹0';
+        }
+
+        // Add scholarship
+        document.getElementById('add-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const scholarship = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                provider: document.getElementById('provider').value,
+                category: document.getElementById('category').value,
+                amount: document.getElementById('amount').value,
+                deadline: document.getElementById('deadline').value,
+                location: document.getElementById('location').value,
+                eligibility: document.getElementById('eligibility').value,
+                description: document.getElementById('description').value,
+                applyLink: document.getElementById('apply-link').value || null
+            };
+            
+            const scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            scholarships.push(scholarship);
+            localStorage.setItem('scholarships', JSON.stringify(scholarships));
+            
+            // Show success message
+            document.getElementById('success-message').style.display = 'block';
+            this.reset();
+            
+            setTimeout(() => {
+                document.getElementById('success-message').style.display = 'none';
+            }, 3000);
+            
+            updateStats();
+        });
+
+        // Load and display scholarships
+        function loadScholarships() {
+            const scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            const container = document.getElementById('scholarships-list');
+            
+            if (scholarships.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 64px;">📋</div>
+                        <h3>No Scholarships Yet</h3>
+                        <p>Start by adding your first scholarship using the "Add Scholarship" section.</p>
+                        <button onclick="showSection('add')" class="btn-primary">➕ Add Your First Scholarship</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort by newest first
+            scholarships.sort((a, b) => b.id - a.id);
+            
+            let html = `
+                <table class="scholarship-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Provider</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Apply Link</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            scholarships.forEach(s => {
+                html += `
+                    <tr>
+                        <td><strong>${s.title}</strong></td>
+                        <td>${s.provider}</td>
+                        <td>${s.category}</td>
+                        <td>₹${Number(s.amount).toLocaleString('en-IN')}</td>
+                        <td>
+                            ${s.applyLink ? 
+                                `<a href="${s.applyLink}" target="_blank" class="view-link-btn">🔗 Open Link</a>` : 
+                                '<span style="color: #94a3b8;">No link</span>'}
+                        </td>
+                        <td>
+                            <button onclick="editScholarship(${s.id})" class="action-btn edit-btn">✏️ Edit</button>
+                            <button onclick="deleteScholarship(${s.id})" class="action-btn delete-btn">🗑️ Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Edit scholarship
+        function editScholarship(id) {
+            const scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            const s = scholarships.find(s => s.id === id);
+            
+            if (!s) return;
+            
+            const modal = document.getElementById('edit-modal');
+            const form = document.getElementById('edit-form');
+            
+            form.innerHTML = `
+                <input type="hidden" id="edit-id" value="${s.id}">
+                
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="edit-title" value="${s.title.replace(/"/g, '&quot;')}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Provider</label>
+                    <input type="text" id="edit-provider" value="${s.provider.replace(/"/g, '&quot;')}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="edit-category" required>
+                        <option value="Engineering" ${s.category === 'Engineering' ? 'selected' : ''}>Engineering</option>
+                        <option value="Medical" ${s.category === 'Medical' ? 'selected' : ''}>Medical</option>
+                        <option value="Business" ${s.category === 'Business' ? 'selected' : ''}>Business</option>
+                        <option value="Arts" ${s.category === 'Arts' ? 'selected' : ''}>Arts</option>
+                        <option value="Computer Science" ${s.category === 'Computer Science' ? 'selected' : ''}>Computer Science</option>
+                        <option value="Law" ${s.category === 'Law' ? 'selected' : ''}>Law</option>
+                        <option value="Science" ${s.category === 'Science' ? 'selected' : ''}>Science</option>
+                        <option value="Humanities" ${s.category === 'Humanities' ? 'selected' : ''}>Humanities</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="edit-amount" value="${s.amount}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="date" id="edit-deadline" value="${s.deadline}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Location (Indian State)</label>
+                    <select id="edit-location" required>
+                        <option value="">Select State</option>
+                        <option value="Maharashtra" ${s.location === 'Maharashtra' ? 'selected' : ''}>Maharashtra</option>
+                        <option value="Delhi" ${s.location === 'Delhi' ? 'selected' : ''}>Delhi</option>
+                        <option value="Karnataka" ${s.location === 'Karnataka' ? 'selected' : ''}>Karnataka</option>
+                        <option value="Tamil Nadu" ${s.location === 'Tamil Nadu' ? 'selected' : ''}>Tamil Nadu</option>
+                        <option value="Telangana" ${s.location === 'Telangana' ? 'selected' : ''}>Telangana</option>
+                        <option value="Uttar Pradesh" ${s.location === 'Uttar Pradesh' ? 'selected' : ''}>Uttar Pradesh</option>
+                        <option value="Gujarat" ${s.location === 'Gujarat' ? 'selected' : ''}>Gujarat</option>
+                        <option value="West Bengal" ${s.location === 'West Bengal' ? 'selected' : ''}>West Bengal</option>
+                        <option value="Rajasthan" ${s.location === 'Rajasthan' ? 'selected' : ''}>Rajasthan</option>
+                        <option value="Madhya Pradesh" ${s.location === 'Madhya Pradesh' ? 'selected' : ''}>Madhya Pradesh</option>
+                        <option value="Bihar" ${s.location === 'Bihar' ? 'selected' : ''}>Bihar</option>
+                        <option value="Punjab" ${s.location === 'Punjab' ? 'selected' : ''}>Punjab</option>
+                        <option value="Haryana" ${s.location === 'Haryana' ? 'selected' : ''}>Haryana</option>
+                        <option value="Kerala" ${s.location === 'Kerala' ? 'selected' : ''}>Kerala</option>
+                        <option value="Andhra Pradesh" ${s.location === 'Andhra Pradesh' ? 'selected' : ''}>Andhra Pradesh</option>
+                        <option value="Odisha" ${s.location === 'Odisha' ? 'selected' : ''}>Odisha</option>
+                        <option value="Assam" ${s.location === 'Assam' ? 'selected' : ''}>Assam</option>
+                        <option value="Jharkhand" ${s.location === 'Jharkhand' ? 'selected' : ''}>Jharkhand</option>
+                        <option value="Chhattisgarh" ${s.location === 'Chhattisgarh' ? 'selected' : ''}>Chhattisgarh</option>
+                        <option value="Uttarakhand" ${s.location === 'Uttarakhand' ? 'selected' : ''}>Uttarakhand</option>
+                        <option value="Himachal Pradesh" ${s.location === 'Himachal Pradesh' ? 'selected' : ''}>Himachal Pradesh</option>
+                        <option value="Goa" ${s.location === 'Goa' ? 'selected' : ''}>Goa</option>
+                        <option value="Remote" ${s.location === 'Remote' ? 'selected' : ''}>Remote / Online</option>
+                        <option value="Pan India" ${s.location === 'Pan India' ? 'selected' : ''}>Pan India</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Eligibility</label>
+                    <textarea id="edit-eligibility" rows="3" required>${s.eligibility.replace(/"/g, '&quot;')}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="edit-description" rows="5" required>${s.description.replace(/"/g, '&quot;')}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Application Link (URL)</label>
+                    <input type="url" id="edit-applyLink" value="${s.applyLink || ''}" placeholder="https://example.com/apply">
+                </div>
+                
+                <button type="submit" class="btn-primary">Update Scholarship</button>
+            `;
+            
+            modal.style.display = 'block';
+            
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                const updated = {
+                    id: s.id,
+                    title: document.getElementById('edit-title').value,
+                    provider: document.getElementById('edit-provider').value,
+                    category: document.getElementById('edit-category').value,
+                    amount: document.getElementById('edit-amount').value,
+                    deadline: document.getElementById('edit-deadline').value,
+                    location: document.getElementById('edit-location').value,
+                    eligibility: document.getElementById('edit-eligibility').value,
+                    description: document.getElementById('edit-description').value,
+                    applyLink: document.getElementById('edit-applyLink').value || null
+                };
+                
+                const index = scholarships.findIndex(s => s.id === id);
+                scholarships[index] = updated;
+                localStorage.setItem('scholarships', JSON.stringify(scholarships));
+                
+                modal.style.display = 'none';
+                loadScholarships();
+                updateStats();
+                alert('✅ Scholarship updated successfully!');
+            };
+        }
+
+        // Delete scholarship
+        function deleteScholarship(id) {
+            if (!confirm('Are you sure you want to delete this scholarship?')) return;
+            
+            let scholarships = JSON.parse(localStorage.getItem('scholarships') || '[]');
+            scholarships = scholarships.filter(s => s.id !== id);
+            localStorage.setItem('scholarships', JSON.stringify(scholarships));
+            
+            loadScholarships();
+            updateStats();
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Initial load
+        updateStats();
+    </script>
+</body>
+</html>
